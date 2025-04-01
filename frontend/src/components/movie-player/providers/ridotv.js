@@ -5,16 +5,10 @@ export const fetchRidoTV = async (slug, ep, season) => {
         destination: `https://ridomovies.tv/tv/${slug}`,
       };
       try {
-        const response = await fetch(
-          window.location.protocol +
-            "//" +
-            window.location.hostname +
-            ":4000/proxy/",
-          {
-            method: "POST",
-            body: JSON.stringify(payload),
-          }
-        );
+        const response = await fetch(`${window.location.origin}/proxy`, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
 
         const htmlContent = await response.text();
         // Regular expression to match the episodes JSON data
