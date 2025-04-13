@@ -5,7 +5,9 @@ export const fetchRidoTV = async (slug, ep, season) => {
         destination: `https://ridomovies.tv/tv/${slug}`,
       };
       try {
-        const response = await fetch(`${window.location.origin}/proxy`, {
+        const currrentURL = new URL(window.location.href)
+        currrentURL.port =  "8080"
+        const response = await fetch(`${currrentURL.origin}/proxy/`, {
           method: "POST",
           body: JSON.stringify(payload),
         });

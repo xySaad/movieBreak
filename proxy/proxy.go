@@ -13,15 +13,16 @@ type payload struct {
 }
 
 func Post(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if req.Method != http.MethodPost {
 		http.Error(resp, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	resp.Header().Set("Access-Control-Allow-Origin", "*")
-
 	bodyB, err := io.ReadAll(req.Body)
 	if err != nil {
+		utils.Error(err)
 		http.Error(resp, "error reading the body", 500)
 		return
 	}
@@ -37,6 +38,7 @@ func Post(resp http.ResponseWriter, req *http.Request) {
 	// Create a new request using http.NewRequest
 	destinationReq, err := http.NewRequest("GET", body.Destination, nil)
 	if err != nil {
+		utils.Error(err)
 		http.Error(resp, "cannot create NewRequest", 500)
 		return
 	}
@@ -63,6 +65,7 @@ func Post(resp http.ResponseWriter, req *http.Request) {
 
 	desttinationBody, err := io.ReadAll(destinationResp.Body)
 	if err != nil {
+		utils.Error(err)
 		http.Error(resp, "cannot read destination response body", http.StatusInternalServerError)
 		return
 	}
